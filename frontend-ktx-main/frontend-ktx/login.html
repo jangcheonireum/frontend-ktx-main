@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng nhập · KTX Thông Minh ĐH Vinh</title>
+  <link rel="stylesheet" href="assets/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/vendor/icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="icon" href="assets/favicon.svg">
+</head>
+<body>
+<div class="auth">
+  <section class="auth-art" aria-hidden="true">
+    <div class="brand" id="brand"></div>
+    <div>
+      <h2>Ký túc xá Đại học Vinh, quản lý trong một nơi.</h2>
+      <p>Phòng ở, sinh viên, hóa đơn và an ninh ra/vào bằng nhận diện khuôn mặt — cho Ban quản lý và sinh viên nội trú.</p>
+      <div class="tower-row" id="towers"></div>
+      <div class="ground"></div>
+    </div>
+    <small style="color:#8a87c7">© 2026 Nhóm 7 · Đồ án chuyên ngành</small>
+  </section>
+
+  <section class="auth-form">
+    <div class="auth-card">
+      <h1>Đăng nhập</h1>
+      <p class="lead">Chọn vai trò và nhập tài khoản được cấp.</p>
+
+      <div class="role-switch" role="tablist" aria-label="Vai trò">
+        <button type="button" class="on" data-role="bql" role="tab" aria-selected="true"><i class="bi bi-person-workspace"></i>Ban quản lý</button>
+        <button type="button" data-role="sv" role="tab" aria-selected="false"><i class="bi bi-mortarboard"></i>Sinh viên</button>
+      </div>
+
+      <div id="msg" role="alert"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="user" id="userLabel">Tên đăng nhập</label>
+          <div class="input-icon"><i class="bi bi-person"></i><input class="form-control" id="user" name="user" autocomplete="username" placeholder="VD: admin" autofocus></div>
+        </div>
+        <div class="mb-2">
+          <label class="form-label" for="pass">Mật khẩu</label>
+          <div class="input-icon position-relative"><i class="bi bi-lock"></i><input class="form-control" id="pass" name="pass" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu" style="padding-right:2.6rem">
+            <button type="button" class="pw-toggle" data-pw="pass" aria-label="Hiện mật khẩu"><i class="bi bi-eye"></i></button></div>
+          <div class="form-text d-none text-warning" id="caps"><i class="bi bi-capslock"></i> Caps Lock đang bật</div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="remember"><label class="form-check-label small" for="remember">Ghi nhớ đăng nhập</label></div>
+          <a href="#" class="small fw-semibold" id="forgot">Quên mật khẩu?</a>
+        </div>
+        <button class="btn btn-primary w-100 py-2" type="submit" id="btnLogin"><span>Đăng nhập</span></button>
+      </form>
+
+      <!-- <div class="demo-acc">
+        <b>Tài khoản dùng thử</b> (dữ liệu mẫu)
+        <div><span>Ban quản lý</span><code>admin</code> / <code>Admin@123</code></div>
+        <div><span>Bảo vệ</span><code>baove01</code> / <code>Baove@123</code></div>
+        <div><span>Sinh viên</span><code>23574801</code> / <code>Sv@12345</code></div>
+        <div><span>Bị khóa</span><code>23574899</code></div>
+      </div> -->
+    </div>
+  </section>
+</div>
+
+<!-- Quên mật khẩu -->
+<div class="modal fade" id="forgotModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title">Lấy lại mật khẩu</h5><button class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button></div>
+  <form id="forgotForm" novalidate><div class="modal-body">
+    <p class="text-ink3">Nhập tên đăng nhập hoặc email trường. Ban quản lý sẽ gửi mật khẩu tạm qua email trong giờ hành chính.</p>
+    <label class="form-label" for="fUser">Tên đăng nhập / Email</label>
+    <input class="form-control" id="fUser" name="fUser" placeholder="VD: 23574801@vinhuni.edu.vn">
+  </div>
+  <div class="modal-footer"><button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Hủy</button><button class="btn btn-primary">Gửi yêu cầu</button></div></form>
+</div></div></div>
+
+<script src="assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function (K) {
+  const $ = K.$;
+  $("#brand").innerHTML = K.brandMark() + `<div><b>KTX Thông Minh</b><small>Trường Đại học Vinh</small></div>`;
+
+  // Tòa nhà minh họa: cửa sổ sáng = phòng có người
+  const heights = [5, 7, 4, 6];
+  $("#towers").innerHTML = heights.map((h, k) => `<div class="tower ${k % 2 ? "t2" : ""}" style="grid-template-columns:repeat(${k === 1 ? 4 : 3},14px)">${Array.from({ length: h * (k === 1 ? 4 : 3) }, () => `<i class="${Math.random() < .55 ? "on" : ""}"></i>`).join("")}</div>`).join("");
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    setInterval(() => { const w = K.$$(".tower i"); const x = w[Math.floor(Math.random() * w.length)]; x.classList.toggle("on"); }, 900);
+  }
+
+  // Đã đăng nhập thì chuyển thẳng
+  const qs = new URLSearchParams(location.search);
+  const s = K.session.get();
+  if (s && !qs.get("out")) { location.replace(K.homeFor(s.vaiTro)); return; }
+  const msg = $("#msg");
+  const show = (type, text) => msg.innerHTML = `<div class="alert-k ${type}"><i class="bi ${type === "bad" ? "bi-exclamation-octagon" : type === "ok" ? "bi-check-circle" : "bi-info-circle"}"></i><div>${text}</div></div>`;
+  if (qs.get("out")) show("ok", "Bạn đã đăng xuất.");
+  if (qs.get("next")) show("info", "Vui lòng đăng nhập để tiếp tục.");
+
+  // Vai trò
+  let role = "bql";
+  try { const r = K.ls.get("ktx.remember"); if (r) { const o = JSON.parse(r); $("#user").value = o.user; role = o.role; $("#remember").checked = true; } } catch (e) {}
+  function setRole(r) {
+    role = r;
+    K.$$(".role-switch button").forEach(b => { const on = b.dataset.role === r; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
+    $("#userLabel").textContent = r === "sv" ? "Mã số sinh viên" : "Tên đăng nhập";
+    $("#user").placeholder = r === "sv" ? "VD: 23574801" : "VD: admin";
+  }
+  setRole(role);
+  K.$$(".role-switch button").forEach(b => b.onclick = () => { setRole(b.dataset.role); msg.innerHTML = ""; });
+
+  // Hiện/ẩn mật khẩu + Caps Lock
+  document.querySelector("[data-pw]").onclick = function () { const i = $("#pass"); const v = i.type === "password"; i.type = v ? "text" : "password"; this.innerHTML = `<i class="bi ${v ? "bi-eye-slash" : "bi-eye"}"></i>`; this.setAttribute("aria-label", v ? "Ẩn mật khẩu" : "Hiện mật khẩu"); };
+  $("#pass").addEventListener("keyup", e => $("#caps").classList.toggle("d-none", !(e.getModifierState && e.getModifierState("CapsLock"))));
+
+  // Đăng nhập
+  let fails = 0;
+  $("#loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault(); msg.innerHTML = "";
+    const f = e.target;
+    const ok = K.validate(f, {
+      user: v => !v ? (role === "sv" ? "Nhập mã số sinh viên." : "Nhập tên đăng nhập.") : (role === "sv" && !/^\d{8,12}$/.test(v) ? "MSSV chỉ gồm 8–12 chữ số." : ""),
+      pass: v => !v ? "Nhập mật khẩu." : (v.length < 6 ? "Mật khẩu có ít nhất 6 ký tự." : "")
+    });
+    if (!ok) return;
+    const btn = $("#btnLogin"); btn.disabled = true; btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Đang kiểm tra…`;
+    try {
+      const u = await K.api.login(f.user.value, f.pass.value);
+      const isSv = u.vaiTro === "Sinh viên";
+      if ((role === "sv") !== isSv) throw new Error(isSv ? "Đây là tài khoản sinh viên. Chọn vai trò “Sinh viên” để đăng nhập." : "Đây là tài khoản Ban quản lý. Chọn vai trò “Ban quản lý” để đăng nhập.");
+      K.session.set(u);
+      if ($("#remember").checked) K.ls.set("ktx.remember", JSON.stringify({ user: f.user.value, role })); else K.ls.del("ktx.remember");
+      btn.innerHTML = `<i class="bi bi-check2"></i> Đăng nhập thành công`;
+      const next = qs.get("next");
+      setTimeout(() => location.href = next && !next.startsWith("/") && next.includes(isSv ? "sinhvien/" : "admin/") ? next : K.homeFor(u.vaiTro), 300);
+    } catch (err) {
+      fails++;
+      show("bad", K.esc(err.message) + (fails >= 3 ? "<br><small>Bạn đã nhập sai nhiều lần. Dùng “Quên mật khẩu?” nếu không nhớ.</small>" : ""));
+      btn.disabled = false; btn.innerHTML = "<span>Đăng nhập</span>";
+      f.pass.value = ""; f.pass.focus();
+    }
+  });
+
+  // Quên mật khẩu
+  const fm = new bootstrap.Modal("#forgotModal");
+  $("#forgot").onclick = (e) => { e.preventDefault(); $("#fUser").value = $("#user").value; fm.show(); };
+  $("#forgotForm").onsubmit = (e) => {
+    e.preventDefault();
+    if (!K.validate(e.target, { fUser: v => v ? "" : "Nhập tên đăng nhập hoặc email." })) return;
+    fm.hide(); show("ok", "Đã gửi yêu cầu cấp lại mật khẩu. Kiểm tra email trường trong 24 giờ tới.");
+  };
+})(window.KTX);
+</script>
+</body>
+</html>
