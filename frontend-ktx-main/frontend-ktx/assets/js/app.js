@@ -70,8 +70,8 @@
       { id: "doi-mat-khau", icon: "bi-key", t: "Đổi mật khẩu", s: 1 }
     ]
   };
-  // Trang sinh viên đã có file (Sprint 1). Các mục khác hiển thị "thuộc Sprint X".
-  const BUILT_SV = ["trang-chu", "doi-mat-khau"];
+  // Trang sinh viên đã hoàn thiện giao diện
+  const BUILT_SV = ["trang-chu", "doi-mat-khau", "ho-so", "dang-ky-phong", "hoa-don", "ra-vao", "thong-bao", "phan-anh"];
 
   function brandMark() {
     return `<div class="brand-mark" aria-hidden="true">${[1, 0, 1, 0, 1, 1, 1, 0, 0].map(o => `<span class="${o ? "on" : ""}"></span>`).join("")}</div>`;

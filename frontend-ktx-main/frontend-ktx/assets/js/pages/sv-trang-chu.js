@@ -41,9 +41,9 @@
       </div></div>
       <div class="panel"><div class="panel-head"><h3>Lối tắt</h3></div><div class="panel-body"><div class="quick">
         <a href="doi-mat-khau.html"><i class="bi bi-key"></i>Đổi mật khẩu</a>
-        <a href="#" data-later="2"><i class="bi bi-person-vcard"></i>Hồ sơ cá nhân</a>
-        <a href="#" data-later="6"><i class="bi bi-chat-left-text"></i>Gửi phản ánh</a>
-        <a href="#" data-later="5"><i class="bi bi-clock-history"></i>Lịch sử ra/vào</a>
+        <a href="ho-so.html"><i class="bi bi-person-vcard"></i>Hồ sơ cá nhân</a>
+        <a href="phan-anh.html"><i class="bi bi-chat-left-text"></i>Gửi phản ánh</a>
+        <a href="ra-vao.html"><i class="bi bi-clock-history"></i>Lịch sử ra/vào</a>
       </div></div></div>
     </div>
   </div>`;
